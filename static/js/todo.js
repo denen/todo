@@ -1,1 +1,8 @@
-console.log('ログ出ます？')
+$(document).ready(function(){
+
+    $("#createButton").click(function(){
+        var serializeData = $("#createTaskForm").serialize();
+        console.log(serializeData)
+    });
+
+});
