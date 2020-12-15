@@ -22,3 +22,10 @@ class TaskList(View):
             return JsonResponse({'task': model_to_dict(new_task)}, status=200)
         else:
             return redirect('task_list_url')
+
+class TaskComplete(View):
+        def post(self, request, id):
+            task = Task.objects.get(id=id)
+            task.completed = True
+            task.save()
+            return JsonResponse({'task': model_to_dict(task)}, status=200)
