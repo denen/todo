@@ -10,7 +10,7 @@ $(document).ready(function(){
             data: serializeData,
             type: 'post',
             success: function(response){
-                $("#taskList").append('<div class="card mb-1" id="taskCard" data-id="' + response.task.id + '"><div class="card-body">' + response.task.title + '<button type="button" class="close float-right"><span aria-hidden="true">&times;</span></button></div></div>')
+                $("#taskList").append('<div class="card mb-1" id="taskCard" data-id="' + response.task.id + '"><div class="card-body">' + response.task.title + '<button type="button" class="close float-right" data-id="' + response.task.id  + '"><span aria-hidden="true">&times;</span></button></div></div>')
             }
         })
         
@@ -33,7 +33,22 @@ $(document).ready(function(){
                 $("#taskList").append(cardItem);
             }
         });
+    }).on('click', 'button.close' ,function(event){
+        event.stopPropagation();
+
+        var dataId = $(this).data('id');
+
+        $.ajax({
+            url: '/tasks/' + dataId + '/delete/', 
+            data: {
+                csrfmiddlewaretoken: csrfToken,
+                id: dataId
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function(){
+                $('#taskCard[data-id="' + dataId + '"]').remove();
+            }
+        })
     });
-
-
 });
